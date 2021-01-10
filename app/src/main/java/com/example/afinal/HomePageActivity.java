@@ -43,7 +43,7 @@ public class HomePageActivity extends AppCompatActivity {
         rowArrayList = new ArrayList<>();
 //        articles = new ArrayList<>();
         apiArticleService = RetrofitInstance.createService(APIArticleService.class);
-        Call<ArticleResponse> call = apiArticleService.getArticles(1,5);
+        Call<ArticleResponse> call = apiArticleService.getArticles();
         call.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
