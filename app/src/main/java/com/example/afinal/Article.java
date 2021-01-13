@@ -21,7 +21,7 @@ public class Article {
         this.myAuthor = myAuthor;
     }
 
-    @SerializedName("category")
+//    @SerializedName("category")
     private Category category;
     @SerializedName("author")
     private myAuthor myAuthor;

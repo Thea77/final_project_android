@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,10 +36,22 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Article article = articleList.get(position);
-            holder.tvItem.setText(article.title);
-            Glide.with(context)
-                    .load(article.getImage())
-                    .into((holder).imageView);
+
+        try {
+            if(article != null && article.getCategory().getCat_name().matches("My_InstaAPP")){
+                holder.tvItem.setText(article.getTitle());
+                Glide.with(context)
+                        .load(article.getImage())
+                        .into((holder).imageView);
+            }  else {
+
+//                Toast.makeText(context, "Item is null", Toast.LENGTH_LONG).show();
+            }
+        }catch (NullPointerException e){
+            Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
+
+        }
+
 
     }
 

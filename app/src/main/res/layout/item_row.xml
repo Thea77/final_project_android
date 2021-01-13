@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/border_pink"
     >
 
@@ -20,25 +20,21 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="330dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
                     >
 
                         <ImageView
                             android:id="@+id/imageItem"
                             android:layout_width="match_parent"
                             android:layout_height="250dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginLeft="16dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.32" />
+                            app:layout_constraintVertical_bias="0.012" />
 
                         <TextView
                             android:id="@+id/tvItem"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
 
@@ -46,14 +42,10 @@
                             android:padding="16dp"
                             android:text="Item X"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.05"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0" />
+                            app:layout_constraintTop_toBottomOf="@+id/imageItem"
+                            tools:layout_editor_absoluteX="0dp" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
         </androidx.cardview.widget.CardView>
