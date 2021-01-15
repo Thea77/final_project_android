@@ -40,6 +40,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
         try {
             if(article != null && article.getCategory().getCat_name().matches("My_InstaAPP")){
                 holder.tvItem.setText(article.getTitle());
+                holder.txtDescription.setText(article.getDescription());
                 Glide.with(context)
                         .load(article.getImage())
                         .into((holder).imageView);
@@ -90,12 +91,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
 
 
      class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItem;
+        TextView tvItem,txtDescription;
         ImageView imageView;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageItem);
             tvItem = itemView.findViewById(R.id.tvItem);
+            txtDescription = itemView.findViewById(R.id.textDescription);
         }
     }
 

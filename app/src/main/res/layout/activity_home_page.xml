@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/border_pink"
+    android:paddingBottom="0dp"
+    android:layout_marginBottom="0dp"
     tools:context=".HomePageActivity">
 
 
@@ -12,9 +13,10 @@
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/border_pink"
         android:fadeScrollbars="true"
         android:text="NewsFeed"
+        android:textColor="@color/border_pink"
+        android:shadowColor="@color/black"
         android:textStyle="bold"
         android:textSize="25sp"
         android:paddingBottom="10dp"
@@ -30,12 +32,12 @@
         android:gravity="center_horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:scrollbarStyle="outsideOverlay"
         android:id="@+id/recyclerView"
-        android:clipToPadding="false"
-        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+
+        android:scrollbarStyle="outsideOverlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
