@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //        getHashKey();
         callbackManager = CallbackManager.Factory.create();
 
-       loginButtonFB.setReadPermissions("email", "public_profile");
+       loginButtonFB.setReadPermissions("public_profile");
        loginButtonFB.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
            @Override
            public void onSuccess(LoginResult loginResult) {
@@ -107,14 +107,25 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleFacebookAccessToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+
+
+
        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
            @Override
            public void onComplete(@NonNull Task<AuthResult> task) {
+               try{
                 FirebaseUser user = mAuth.getCurrentUser();
+                if(user != null){
+                    Log.d(TAG,"complete "+ user.getDisplayName());
 
-                Log.d(TAG,"complete "+ user.getDisplayName());
+                }
+               }catch (RuntimeException e){
+                   Log.e("error", e.getMessage());
+               }
            }
        });
+
+
     }
 
     private void initUI() {

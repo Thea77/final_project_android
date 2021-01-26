@@ -1,6 +1,7 @@
 package com.example.afinal;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +19,29 @@ import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemViewHolder> {
 
-     List<Article> articleList;
     Context context;
+     List<Article> articleList;
+    ClickItemListener clickItemListener;
 
-    public ArticleAdapter(List<Article> articleList, Context context) {
-        this.articleList = articleList;
+//    public ArticleAdapter(List<Article> articleList, Context context) {
+//        this.articleList = articleList;
+//        this.context = context;
+//    }
+
+    public ArticleAdapter(Context context, List<Article> articleList, ClickItemListener clickItemListener) {
         this.context = context;
+        this.articleList = articleList;
+        this.clickItemListener = clickItemListener;
     }
+
+
+//    public ArticleAdapter(NewFeedFragment newFeedFragment, List<Article> rowArrayList, ClickItemListener clickItemListener) {
+//    }
+//    public void addArticleToApi(List<Article> articles){
+//        this.articleList.clear();
+//        this.articleList = articles;
+//        notifyDataSetChanged();
+//    }
 
     @NonNull
     @Override
@@ -38,16 +55,28 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
         Article article = articleList.get(position);
 
         try {
-            if(article != null && article.getCategory().getCat_name().matches("My_InstaAPP")){
+
+            if(article != null && article.getCategory().getCat_name().matches("View")){
                 holder.tvItem.setText(article.getTitle());
                 holder.txtDescription.setText(article.getDescription());
                 Glide.with(context)
                         .load(article.getImage())
                         .into((holder).imageView);
-            }  else {
+                holder.imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String myItemID = article.getId();
+//                        Toast.makeText(context,"ID: "+myItemID,Toast.LENGTH_SHORT).show();
+                        if (myItemID != null){
+                            clickItemListener.onItemClick(myItemID);
+                        }
+                    }
+                });
 
+            }  else {
 //                Toast.makeText(context, "Item is null", Toast.LENGTH_LONG).show();
             }
+
         }catch (NullPointerException e){
             Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
 
@@ -58,35 +87,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
 
     @Override
     public int getItemCount() {
-        return articleList == null ? 0 : articleList.size();
+        return articleList.size();
     }
 
-
-//
-//    @NonNull
-//    @Override
-//    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent, false);
-//        return new ItemViewHolder(view);
-//    }
-
-
-//    @Override
-//    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-//       Article article = articleList.get(position);
-////        if (holder instanceof ItemViewHolder) {
-//            holder..setText(article.getCategory().cat_name);
-//            Glide.with(context)
-//                    .load(article.getImage())
-//                    .into(((ItemViewHolder) holder).imageView);
-//
-////        }
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return articleList == null ? 0 : articleList.size();
-//    }
+    public interface ClickItemListener {
+        void onItemClick(String id);
+    }
 
 
 
@@ -100,6 +106,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
             txtDescription = itemView.findViewById(R.id.textDescription);
         }
     }
+
+
 
 //    private class LoadingViewHolder extends RecyclerView.ViewHolder {
 //

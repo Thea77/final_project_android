@@ -3,45 +3,61 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingBottom="0dp"
     android:layout_marginBottom="0dp"
     tools:context=".HomePageActivity">
 
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fadeScrollbars="true"
-        android:text="NewsFeed"
-        android:textColor="@color/white"
-        android:shadowColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:textAlignment="center"
-        android:layout_marginBottom="0dp"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab"
+        style="@style/CardView.Light"
+        android:layout_width="310dp"
+        android:layout_height="53dp"
+        android:background="@drawable/myrect"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/add_post"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toBottomOf="@id/tab"
+        app:layout_editor_absoluteX="0dp"/>
+
+
+    <Button
+        android:id="@+id/add_post"
+        android:layout_width="100dp"
+        android:typeface="sans"
+        android:textStyle="normal"
+        android:layout_height="53dp"
+        android:textSize="12sp"
+        android:background="@drawable/myrect"
+        android:text="Add post"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        android:gravity="center_horizontal" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-
-        android:scrollbarStyle="outsideOverlay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/img_add"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_baseline_add_circle_24"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="1165dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:tint="#95E63D" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "466537920747",
-    "project_id": "auth-facebook-967b5",
-    "storage_bucket": "auth-facebook-967b5.appspot.com"
+    "project_number": "156324278608",
+    "project_id": "final-project-android-3e2ae",
+    "storage_bucket": "final-project-android-3e2ae.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:466537920747:android:31922a95ec5345b28d26ae",
+        "mobilesdk_app_id": "1:156324278608:android:6a8844f85af9e97eb0bc55",
         "android_client_info": {
           "package_name": "com.example.afinal"
         }
       },
       "oauth_client": [
         {
-          "client_id": "466537920747-u4rpf81anpbq06k5j049pd0rn0afi2rf.apps.googleusercontent.com",
+          "client_id": "156324278608-1cmp7d89g4b5rsns4t7a5igfr6kv3q4q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.afinal",
-            "certificate_hash": "2f47760ee1a257de3bceb1a01747dc3d3d51f7fe"
+            "certificate_hash": "476368f71e6d40fd0526d74c0d077842773ffa51"
           }
         },
         {
-          "client_id": "466537920747-aecg5gthegn7sg8v2g65a4aft1lqq1fd.apps.googleusercontent.com",
+          "client_id": "156324278608-dmls2tenel4sb72lcv2qs77cn6lbn3sv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDpJouB1hQcb0EZn0j0daGQkB2F3IKHpiY"
+          "current_key": "AIzaSyAWDl5z5HQ2KGhanEpt1Res0FNQ3iN6YUM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "466537920747-aecg5gthegn7sg8v2g65a4aft1lqq1fd.apps.googleusercontent.com",
+              "client_id": "156324278608-dmls2tenel4sb72lcv2qs77cn6lbn3sv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

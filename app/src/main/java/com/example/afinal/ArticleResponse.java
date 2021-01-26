@@ -7,7 +7,9 @@ import java.util.List;
 public class ArticleResponse {
     @SerializedName("data")
     List<Article> articles;
-    public boolean has_more;
+
+    public ArticleResponse() {
+    }
 
     public ArticleResponse(List<Article> articles) {
         this.articles = articles;

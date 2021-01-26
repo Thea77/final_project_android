@@ -1,5 +1,6 @@
 package com.example.afinal;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Article {
@@ -12,6 +13,9 @@ public class Article {
     @SerializedName("image")
     String image;
 
+    public Article() {
+    }
+
     public Article(String id, String title, String description, String image, Category category, com.example.afinal.myAuthor myAuthor) {
         this.id = id;
         this.title = title;
@@ -21,7 +25,7 @@ public class Article {
         this.myAuthor = myAuthor;
     }
 
-//    @SerializedName("category")
+    @SerializedName("category")
     private Category category;
     @SerializedName("author")
     private myAuthor myAuthor;
@@ -96,6 +100,9 @@ class Category{
     @SerializedName("name")
     String cat_name;
 
+    public Category() {
+    }
+
     public Category(String cat_id, String cat_name) {
         this.cat_id = cat_id;
         this.cat_name = cat_name;
@@ -136,6 +143,9 @@ class myAuthor{
     String email;
     @SerializedName("image")
     String image;
+
+    public myAuthor() {
+    }
 
     @Override
     public String toString() {
