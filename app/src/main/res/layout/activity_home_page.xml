@@ -12,13 +12,13 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
         style="@style/CardView.Light"
-        android:layout_width="310dp"
+        android:layout_width="177dp"
         android:layout_height="53dp"
-        android:background="@drawable/myrect"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/add_post"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/search"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -31,15 +31,10 @@
         app:layout_editor_absoluteX="0dp"/>
 
 
-    <Button
-        android:id="@+id/add_post"
-        android:layout_width="100dp"
-        android:typeface="sans"
-        android:textStyle="normal"
-        android:layout_height="53dp"
-        android:textSize="12sp"
-        android:background="@drawable/myrect"
-        android:text="Add post"
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="230dp"
+        android:layout_height="54dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -58,6 +53,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:tint="#95E63D" />
+        app:tint="@color/border_pink" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

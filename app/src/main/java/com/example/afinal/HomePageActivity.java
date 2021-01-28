@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +41,7 @@ public class HomePageActivity extends AppCompatActivity {
     ArticleAdapter adapter;
     ViewPager viewPager;
     TabLayout tabLayout;
-    Button add_post;
+
     ImageView img_add;
     List<Article> articleList;
     List<Category> categoryList;
@@ -64,12 +65,9 @@ public class HomePageActivity extends AppCompatActivity {
                 myCustomDialog();
             }
         });
-        add_post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myCustomDialog();
-            }
-        });
+
+
+
 
 
 
@@ -103,9 +101,9 @@ public class HomePageActivity extends AppCompatActivity {
         }
 
     private void initUI() {
-        add_post = findViewById(R.id.add_post);
+//        add_post = findViewById(R.id.add_post);
         img_add =  findViewById(R.id.img_add);
-        progressBar=findViewById(R.id.progressBar);
+//        progressBar=findViewById(R.id.progressBar);
 
 
     }
@@ -174,22 +172,25 @@ public class HomePageActivity extends AppCompatActivity {
                                 String catSelected = adapterView.getSelectedItem().toString();
 
                                 try{
-                                    Article article = new Article();
+//                                    Article article = new Article();
                                     Category category = new Category();
+                                    Author author = new Author();
+
                                     category.setCat_name(catSelected);
                                     category.setCat_id(catID[i]);
-                                    article.setCategory(category);
+//                                    article.setCategory(category);
+                                    author.setName("anonymous");
+                                    author.setId("6000f23560489c7e32233d4c");
 
-                                Toast.makeText(getApplicationContext(), "The option is:"+ category , Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "The option is:"+ category , Toast.LENGTH_SHORT).show();
 
                                 save.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
                                         Call<ArticleResponse> call =  apiArticleService.addArticle(new ArticleRequest(
                                                 title.getText().toString(), desc.getText().toString(),
-                                                imageUrl.getText().toString(), category
+                                                imageUrl.getText().toString(), category, author
                                         ));
-
 
                                         call.enqueue(new Callback<ArticleResponse>() {
                                             @Override
@@ -197,7 +198,6 @@ public class HomePageActivity extends AppCompatActivity {
 
                                                 if(response.isSuccessful()){
                                                     try {
-
                                                         Log.d("TAG","addResponse: "+ response.body().articles.toString());
                                                         recreate();
                                                     }catch (RuntimeException e){
@@ -214,8 +214,17 @@ public class HomePageActivity extends AppCompatActivity {
                                             }
                                         });
                                         dialog.dismiss();
+                                        new SweetAlertDialog(HomePageActivity.this)
+                                                .setTitleText("Create Successfully!")
+                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                    @Override
+                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                        recreate();
+                                                    }
+                                                })
+                                                .show();
 
-                                        recreate();
+
                                     }
                                 });
                                 }catch (RuntimeException e){
@@ -244,8 +253,6 @@ public class HomePageActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
 

@@ -2,8 +2,10 @@ package com.example.afinal;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -28,5 +30,12 @@ public interface APIArticleService {
 
     @GET("/api/category")
     Call<CategoryResponse> getCategories();
+
+    @PATCH("/api/articles/{id}")
+    Call<Void> updateArticle(@Path("id") String id , @Body UpdateArticle updateArticle);
+
+    @DELETE("/api/articles/{id}")
+    Call<Void> deleteArticle(@Path("id") String id);
+
 
 }

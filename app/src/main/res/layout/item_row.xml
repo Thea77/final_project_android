@@ -86,6 +86,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
+                    android:id="@+id/menuItem"
                     android:layout_width="33dp"
                     android:layout_height="25dp"
                     android:layout_marginLeft="350dp"

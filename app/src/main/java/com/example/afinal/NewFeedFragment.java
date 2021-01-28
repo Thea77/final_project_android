@@ -1,22 +1,42 @@
 package com.example.afinal;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +48,10 @@ public class NewFeedFragment extends Fragment {
     APIArticleService apiArticleService;
     RetrofitInstance retrofitInstance;
     ArticleAdapter adapter;
+    Article currentArticle;
+    Category currentCategory;
+    public static SweetAlertDialog pDialog;
+
 //    Context context;
     //    List<Article> articles;
 //    RecyclerView recyclerView;
@@ -83,12 +107,23 @@ public class NewFeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_feed, container, false);
+        ImageView imgMenu = view.findViewById(R.id.menuItem);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 //        initAdapter();
 
+
+        currentArticle = new Article();
+        currentCategory = new Category();
         rowArrayList = new ArrayList<>();
+
+        pDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading ...");
+        pDialog.setCancelable(true);
+        pDialog.show();
+
 //        articles = new ArrayList<>();
         apiArticleService = RetrofitInstance.createService(APIArticleService.class);
         Call<ArticleResponse> call = apiArticleService.getArticles();
@@ -98,12 +133,43 @@ public class NewFeedFragment extends Fragment {
                 Log.d("TAG", "response: " + response.body().articles.toString());
                 rowArrayList = response.body().articles;
                 adapter = new ArticleAdapter(view.getContext(),rowArrayList,null);
-
                 adapter = new ArticleAdapter(view.getContext(),rowArrayList, new ArticleAdapter.ClickItemListener() {
                     @Override
                     public void onItemClick(String id) {
 //                        Log.d("click","Click");
                         openDetailActivity(id);
+                    }
+
+
+                    @Override
+                    public void onItemMenuClick(Article article) {
+                        currentArticle = article;
+//                        currentCategory = category;
+                        //creating a popup menu
+                        PopupMenu popup = new PopupMenu(getActivity(), getActivity().findViewById(R.id.menuItem));
+                        //inflating menu from xml resource
+                        popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+
+                        //adding click listener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.edit:
+                                        handleUpdateArticle();
+                                        break;
+                                    case R.id.remove:
+                                        handleDeleteArticleClick();
+                                        break;
+                                    case R.id.share:
+
+                                        break;
+                                }
+                                return false;
+                            }
+                        });
+                        //displaying the popup
+                        popup.show();
                     }
 
                 });
@@ -121,6 +187,119 @@ public class NewFeedFragment extends Fragment {
         return view;
     }
 
+
+
+    private void handleUpdateArticle() {
+            List<Article> articleList;
+            List<Category> categoryList;
+
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.update_post_dialog);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme; //style id
+
+            ImageView close = dialog.findViewById(R.id.close);
+            EditText title = dialog.findViewById(R.id.title_update);
+            EditText desc = dialog.findViewById(R.id.desc_update);
+            EditText imageUrl= dialog.findViewById(R.id.imageUpdate);
+
+            Button save = dialog.findViewById(R.id.save_update);
+            Button cancel = dialog.findViewById(R.id.cancel_update);
+
+            save.setText("Update");
+            desc.setText(currentArticle.getDescription());
+            title.setText(currentArticle.getTitle());
+            imageUrl.setText(currentArticle.getImage());
+
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            articleList = new ArrayList<>();
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Call<Void> call = apiArticleService.updateArticle(currentArticle.getId(),
+                            new UpdateArticle(title.getText().toString(),
+                                    desc.getText().toString(),imageUrl.getText().toString())
+                            );
+                    new SweetAlertDialog(getContext())
+                            .setTitleText("Updated!")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    call.enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            dialog.dismiss();
+                                            Intent intent = new Intent(recyclerView.getContext(),HomePageActivity.class);
+                                            startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+                            })
+                            .show();
+
+                }
+            });
+
+            dialog.show();
+
+    }
+
+
+    private void handleDeleteArticleClick() {
+        Call<Void> call = apiArticleService.deleteArticle(currentArticle.getId());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setContentText("You won't be able to recover this file!")
+                        .setConfirmText("Delete!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                adapter.delete(currentArticle.getId());
+//                                Toast.makeText(getContext(),"Delete Successfully!",Toast.LENGTH_SHORT).show();
+                                if(response.isSuccessful()){
+                                    Intent intent = new Intent(recyclerView.getContext(),HomePageActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        })
+                        .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
     private void openDetailActivity(String id) {
         Log.d("TAG","ID: "+id);
         Intent intent = new Intent(recyclerView.getContext(),DetailActivity.class);

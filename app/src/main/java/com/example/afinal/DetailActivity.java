@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import retrofit2.Response;
 public class DetailActivity extends AppCompatActivity {
 
     String id;
-    ImageView image;
+    ImageView image,arrowBack,profileImage;
     TextView title,des;
 
 
@@ -28,6 +29,16 @@ public class DetailActivity extends AppCompatActivity {
         image = findViewById(R.id.imgDetail);
         title = findViewById(R.id.txtTitleDetail);
         des = findViewById(R.id.txtDescriptionDetail);
+        arrowBack = findViewById(R.id.arrowBack);
+        profileImage = findViewById(R.id.profile_image);
+
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent  intent= new Intent(DetailActivity.this,HomePageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -56,5 +67,11 @@ public class DetailActivity extends AppCompatActivity {
         Glide.with(DetailActivity.this)
                 .load(article.getImage())
                 .into(image);
+        Glide.with(DetailActivity.this)
+                .load(article.getMyAuthor().image)
+                .into(profileImage);
+//        Glide.with(DetailActivity.this)
+//                .load("")
+//                .into(profileImage);
     }
 }

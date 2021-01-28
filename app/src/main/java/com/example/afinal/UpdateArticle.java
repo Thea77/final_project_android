@@ -1,24 +1,15 @@
 package com.example.afinal;
 
-import com.google.gson.annotations.SerializedName;
-
-public class ArticleRequest {
-
+public class UpdateArticle {
 
     String title;
     String description;
     String image;
-    @SerializedName("category")
-    private Category category;
-    @SerializedName("author")
-    private Author author;
 
-    public ArticleRequest(String title, String description, String image, Category category, Author author) {
+    public UpdateArticle(String title, String description, String image) {
         this.title = title;
         this.description = description;
         this.image = image;
-        this.category = category;
-        this.author = author;
     }
 
     public String getTitle() {
@@ -45,30 +36,12 @@ public class ArticleRequest {
         this.image = image;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     @Override
     public String toString() {
-        return "ArticleRequest{" +
+        return "UpdateArticle{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
-                ", category=" + category +
-                ", author=" + author +
                 '}';
     }
 }

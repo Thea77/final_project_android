@@ -21,6 +21,10 @@ public class Author {
         this.image = image;
     }
 
+    public Author() {
+
+    }
+
     public String getId() {
         return id;
     }
