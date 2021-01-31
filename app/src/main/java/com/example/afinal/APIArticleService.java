@@ -31,6 +31,9 @@ public interface APIArticleService {
     @GET("/api/category")
     Call<CategoryResponse> getCategories();
 
+    @GET("api/author")
+    Call<AuthorResponse> getAllAuthor();
+
     @PATCH("/api/articles/{id}")
     Call<Void> updateArticle(@Path("id") String id , @Body UpdateArticle updateArticle);
 

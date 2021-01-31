@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -193,6 +194,7 @@ public class HomePageActivity extends AppCompatActivity {
                                         ));
 
                                         call.enqueue(new Callback<ArticleResponse>() {
+
                                             @Override
                                             public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
 
@@ -200,6 +202,7 @@ public class HomePageActivity extends AppCompatActivity {
                                                     try {
                                                         Log.d("TAG","addResponse: "+ response.body().articles.toString());
                                                         recreate();
+
                                                     }catch (RuntimeException e){
                                                         Log.e("TAG",e.getMessage());
                                                     }
@@ -214,19 +217,22 @@ public class HomePageActivity extends AppCompatActivity {
                                             }
                                         });
                                         dialog.dismiss();
+
                                         new SweetAlertDialog(HomePageActivity.this)
                                                 .setTitleText("Create Successfully!")
                                                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                                     @Override
                                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                         recreate();
+
                                                     }
-                                                })
-                                                .show();
+                                                }).show();
 
 
                                     }
+
                                 });
+
                                 }catch (RuntimeException e){
 
                                 }

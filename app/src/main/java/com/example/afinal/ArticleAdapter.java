@@ -38,17 +38,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
         notifyDataSetChanged();
     }
 
-    public ArticleAdapter(ArrayList<Article> articleList) {
-        this.articleList = articleList;
-    }
-    public void filterList(ArrayList<Article> filterdNames) {
-        this.articleList = filterdNames;
-        notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent, false);
         return new ItemViewHolder(view);
 
@@ -88,6 +82,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
               });
 
             }  else {
+                NewFeedFragment.pDialog.dismiss();
 //                Toast.makeText(context, "Item is null", Toast.LENGTH_LONG).show();
             }
 
@@ -115,14 +110,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
      class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvItem,txtDescription;
         ImageView imageView,imgMenu;
-        ProgressBar progressBar;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageItem);
             imgMenu = itemView.findViewById(R.id.menuItem);
             tvItem = itemView.findViewById(R.id.tvItem);
             txtDescription = itemView.findViewById(R.id.textDescription);
-//            progressBar = itemView.findViewById(R.id.progressBar);
 
         }
     }
