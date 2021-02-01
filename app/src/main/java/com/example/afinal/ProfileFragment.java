@@ -45,7 +45,8 @@ public class ProfileFragment extends Fragment {
     public static SweetAlertDialog pDialog;
 
     List<Article> rowArrayList;
-
+    ImageView myImProfile;
+    TextView userName;
 
 
 
@@ -99,12 +100,17 @@ public class ProfileFragment extends Fragment {
         recyclerView = view.findViewById(R.id.profileRecycler);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 //        TextView totalCount = view.findViewById(R.id.postCount);
-
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mReceiver, new IntentFilter("myAuth"));
-
-
         rowArrayList = new ArrayList<>();
 
+        ImageView arrowBack = view.findViewById(R.id.profileArrowBack);
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent  intent= new Intent(getContext(),HomePageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         apiArticleService = RetrofitInstance.createService(APIArticleService.class);
         Call<ArticleResponse> call = apiArticleService.getArticles();
@@ -150,12 +156,18 @@ public class ProfileFragment extends Fragment {
             String Auth = intent.getStringExtra("Auth");
             String imgAuthor = intent.getStringExtra("igmAuthor");
 //        Log.e("TAG","myUser : "+ Auth);
-            ImageView myImProfile = getActivity().findViewById(R.id.circleImageProfile);
-            TextView userName = getActivity().findViewById(R.id.userNameProfile);
-            userName.setText(Auth);
-            Glide.with(context)
-                    .load(imgAuthor)
-                    .into(myImProfile);
+
+            try {
+                myImProfile = getActivity().findViewById(R.id.circleImageProfile);
+                userName = getActivity().findViewById(R.id.userNameProfile);
+                userName.setText(Auth);
+                Glide.with(context)
+                        .load(imgAuthor)
+                        .into(myImProfile);
+            }catch (Exception e){
+
+            }
+
 
         }
     };

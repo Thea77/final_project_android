@@ -44,24 +44,27 @@ dependencies {
 
 
 
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+//    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-login:[8.1)'
+//    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+//    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth:11.6.0'
 
 
-    implementation "androidx.cardview:cardview:1.0.0"
 
+
+    implementation "androidx.cardview:cardview:1.0.0"
 
     //image circle
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation 'com.android.support:multidex:1.0.3'
-
 
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
 
