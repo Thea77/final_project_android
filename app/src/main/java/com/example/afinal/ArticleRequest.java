@@ -11,9 +11,9 @@ public class ArticleRequest {
     @SerializedName("category")
     private Category category;
     @SerializedName("author")
-    private Author author;
+    private myAuthor author;
 
-    public ArticleRequest(String title, String description, String image, Category category, Author author) {
+    public ArticleRequest(String title, String description, String image, Category category, myAuthor author) {
         this.title = title;
         this.description = description;
         this.image = image;
@@ -53,11 +53,11 @@ public class ArticleRequest {
         this.category = category;
     }
 
-    public Author getAuthor() {
+    public myAuthor getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(myAuthor author) {
         this.author = author;
     }
 

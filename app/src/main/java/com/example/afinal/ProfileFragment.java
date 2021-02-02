@@ -121,7 +121,8 @@ public class ProfileFragment extends Fragment {
                 if (response.isSuccessful()){
                     try {
 
-                        //  Log.d("TAG", "responseProfile: " + rowArrayList.size());
+//                          Log.d("TAG", "responseProfile: "+recyclerView.getAdapter().getItemCount());
+
                         adapter = new ProfileAdapter(view.getContext(),rowArrayList,null);
                         adapter = new ProfileAdapter(getContext(), rowArrayList, new ProfileAdapter.ClickProItemListener() {
                             @Override

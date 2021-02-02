@@ -27,6 +27,8 @@ public interface APIArticleService {
 
     @POST("/api/articles")
     Call<ArticleResponse> addArticle(@Body ArticleRequest articleRequest );
+    @POST("/api/author")
+    Call<AuthorResponse> createAuthor(@Body AuthorRequest authorRequest );
 
     @GET("/api/category")
     Call<CategoryResponse> getCategories();

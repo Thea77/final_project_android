@@ -43,7 +43,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
         try {
 
             if( article != null && article.getCategory().getCat_name().matches("View")
-                    && article.getMyAuthor().getId().matches("6000f23560489c7e32233d4c")
+                    && article.getMyAuthor().getName().matches("Lim Sokunthea")
             ){
 
                 String author = article.getMyAuthor().getName();
@@ -53,11 +53,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
                 intent.putExtra("igmAuthor",igmAuthor);
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
+//                Log.d("TAG", "TotalEq: " + holder.getAdapterPosition());
 
                 Glide.with(context)
                         .load(article.getImage())
                         .into((holder).imgProfile);
-                    Log.d("TAG", "TotalEq: " + articles.get(position));
+
+
 
 
                     holder.imgProfile.setOnClickListener(new View.OnClickListener() {
@@ -74,11 +76,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
             }
 
         }catch (NullPointerException e){
-            Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
         }
 
     }
-
 
 
     public interface  ClickProItemListener{
@@ -98,7 +99,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
     public profileItemViewHolder(@NonNull View itemView) {
         super(itemView);
         imgProfile = itemView.findViewById(R.id.profileImageItem);
-        totalPost = itemView.findViewById(R.id.postCount);
+//        totalPost = itemView.findViewById(R.id.postCount);
 
     }
 }

@@ -21,8 +21,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -42,11 +44,11 @@ public class HomePageActivity extends AppCompatActivity {
     ArticleAdapter adapter;
     ViewPager viewPager;
     TabLayout tabLayout;
-
+    TextView logout;
     ImageView img_add;
     List<Article> articleList;
     List<Category> categoryList;
-    List<Author> authorList;
+    List<myAuthor> authorList;
 
     ProgressBar progressBar;
 
@@ -58,6 +60,16 @@ public class HomePageActivity extends AppCompatActivity {
 
         initUI();
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                Intent homePage = new Intent(HomePageActivity.this, MainActivity.class);
+                startActivity(homePage);
+                finish();
+            }
+        });
+
         apiArticleService = RetrofitInstance.createService(APIArticleService.class);
 
         img_add.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +78,6 @@ public class HomePageActivity extends AppCompatActivity {
                 myCustomDialog();
             }
         });
-
-
 
 
 
@@ -104,6 +114,7 @@ public class HomePageActivity extends AppCompatActivity {
     private void initUI() {
 //        add_post = findViewById(R.id.add_post);
         img_add =  findViewById(R.id.img_add);
+        logout = findViewById(R.id.logOut);
 //        progressBar=findViewById(R.id.progressBar);
 
 
@@ -140,7 +151,8 @@ public class HomePageActivity extends AppCompatActivity {
 
         articleList = new ArrayList<>();
         categoryList = new ArrayList<>();
-//        authorList = new ArrayList<>();
+        authorList = new ArrayList<>();
+
 
         Call<CategoryResponse> call = apiArticleService.getCategories();
         call.enqueue(new Callback<CategoryResponse>() {
@@ -148,11 +160,11 @@ public class HomePageActivity extends AppCompatActivity {
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
                 if(response.isSuccessful()){
                     try {
+
                         categoryList = response.body().getCategories();
-
-
                         String[] s = new String[categoryList.size()];
                         String[] catID = new String[categoryList.size()];
+
 
                         for(int i=0; i<categoryList.size();i++) {
                             s[i] = categoryList.get(i).getCat_name();
@@ -173,17 +185,37 @@ public class HomePageActivity extends AppCompatActivity {
                                 String catSelected = adapterView.getSelectedItem().toString();
 
                                 try{
+
 //                                    Article article = new Article();
                                     Category category = new Category();
-                                    Author author = new Author();
+                                    myAuthor author = new myAuthor();
 
                                     category.setCat_name(catSelected);
                                     category.setCat_id(catID[i]);
-//                                    article.setCategory(category);
-                                    author.setName("anonymous");
-                                    author.setId("6000f23560489c7e32233d4c");
+//                                    article.setCategory(category);.
 
-//                                Toast.makeText(getApplicationContext(), "The option is:"+ category , Toast.LENGTH_SHORT).show();
+
+                                    Call<AuthorResponse> callMyAuth = apiArticleService.getAllAuthor();
+                                    callMyAuth.enqueue(new Callback<AuthorResponse>() {
+                                        @Override
+                                        public void onResponse(Call<AuthorResponse> call, Response<AuthorResponse> response) {
+
+                                            Intent intent = getIntent();
+                                            String profileName = intent.getStringExtra("profileName");
+                                            Log.e("TAG","getUserName: "+profileName);
+
+                                            authorList = response.body().authorList;
+                                            String[] AuthID = new String[authorList.size()];
+                                            for (int j=0; j<authorList.size();j++){
+                                                AuthID[j] = authorList.get(j).getId();
+                                            }
+                                            Log.e("TAG", "AuthorID: " + AuthID[0]);
+
+                                        author.setName(profileName);
+                                        author.setId(AuthID[0]);
+
+//                                        Toast.makeText(getApplicationContext(), "Author:"+ author , Toast.LENGTH_SHORT).show();
+
 
                                 save.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -217,21 +249,28 @@ public class HomePageActivity extends AppCompatActivity {
                                             }
                                         });
                                         dialog.dismiss();
-
-                                        new SweetAlertDialog(HomePageActivity.this)
-                                                .setTitleText("Create Successfully!")
-                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                    @Override
-                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                        recreate();
-
-                                                    }
-                                                }).show();
+                                        recreate();
+//                                        new SweetAlertDialog(HomePageActivity.this)
+//                                                .setTitleText("Create Successfully!")
+//                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                    @Override
+//                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                                        recreate();
+//
+//                                                    }
+//                                                }).show();
 
 
                                     }
 
                                 });
+
+                                    }  //end response Author
+                                        @Override
+                                        public void onFailure(Call<AuthorResponse> call, Throwable t) {
+
+                                        }
+                                    });
 
                                 }catch (RuntimeException e){
 
@@ -247,11 +286,13 @@ public class HomePageActivity extends AppCompatActivity {
                         }
 
                     }catch (NullPointerException e){
-                        Toast.makeText(HomePageActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
+//                        Toast.makeText(HomePageActivity.this, e.getMessage(),Toast.LENGTH_LONG).show();
 
                     }
 
                 }
+
+
             }
 
             @Override

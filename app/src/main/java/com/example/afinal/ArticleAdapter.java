@@ -87,7 +87,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
             }
 
         }catch (NullPointerException e){
-            Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
 
         }
 

@@ -40,6 +40,11 @@ import com.google.firebase.auth.FirebaseUser;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     FirebaseAuth mAuth;
     String TAG = "Main";
-
+    List<myAuthor> authorList;
 
 
     @Override
@@ -69,11 +74,43 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
 //                Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_SHORT).show();
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                APIArticleService apiArticleService;
+                apiArticleService = RetrofitInstance.createService(APIArticleService.class);
 
                 //get profile detail in facebook
                 Profile profile = Profile.getCurrentProfile();
-                Log.e(TAG,"myProfile: "+profile.getName());
+//                Log.e(TAG,"myProfile: "+profile.getLinkUri());
+//                Log.e(TAG,"myProfile: "+profile.getProfilePictureUri(200,200));
 
+
+                    myAuthor myAuthor = new myAuthor();
+                    myAuthor.setName(profile.getName());
+
+                    if (!myAuthor.getName().matches(profile.getName())){
+//                        Log.e("TAG","my Name: "+myAuthor);
+                        Call<AuthorResponse> call = apiArticleService.createAuthor(new AuthorRequest(
+                                profile.getName(),profile.getProfilePictureUri(200,200).toString()
+
+                        ));
+                        call.enqueue(new Callback<AuthorResponse>() {
+                            @Override
+                            public void onResponse(Call<AuthorResponse> call, Response<AuthorResponse> response) {
+                                if (response.isSuccessful()){
+                                    Log.e("TAG","created User: "+profile.getName());
+
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<AuthorResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }
+
+
+                Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
+                intent.putExtra("profileName",profile.getName());
+                startActivity(intent);
             }
 
             @Override
@@ -106,17 +143,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+//    check user login
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                if (currentAccessToken != null){
+                    Log.e("TAG","Logged");
+                    Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
+                    startActivity(intent);
+                }
+            }
+        };
+        accessTokenTracker.startTracking();
     }
 
-//    check user login
-//    AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
-//        @Override
-//        protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-//                if (currentAccessToken == null){
-//
-//                }
-//        }
-//    };
 
 
     private void handleFacebookAccessToken(AccessToken accessToken) {

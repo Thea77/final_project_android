@@ -130,6 +130,9 @@ public class NewFeedFragment extends Fragment {
         call.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(Call<ArticleResponse> call, Response<ArticleResponse> response) {
+                if (response.isSuccessful()){
+                    try {
+
                 Log.d("TAG", "response: " + response.body().articles.toString());
                 rowArrayList = response.body().articles;
                 adapter = new ArticleAdapter(view.getContext(),rowArrayList,null);
@@ -176,12 +179,16 @@ public class NewFeedFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
 
 
-
+                    }catch (Exception e){
+//                        Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
             @Override
             public void onFailure(Call<ArticleResponse> call, Throwable t) {
 
             }
+
         });
 
         return view;

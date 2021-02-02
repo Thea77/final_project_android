@@ -7,17 +7,17 @@ import java.util.List;
 public class AuthorResponse {
 
     @SerializedName("data")
-    List<Author> authorList;
+    List<myAuthor> authorList;
 
-    public AuthorResponse(List<Author> authorList) {
+    public AuthorResponse(List<myAuthor> authorList) {
         this.authorList = authorList;
     }
 
-    public List<Author> getAuthorList() {
+    public List<myAuthor> getAuthorList() {
         return authorList;
     }
 
-    public void setAuthorList(List<Author> authorList) {
+    public void setAuthorList(List<myAuthor> authorList) {
         this.authorList = authorList;
     }
 }
