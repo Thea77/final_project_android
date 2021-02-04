@@ -3,6 +3,7 @@ package com.example.afinal;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,7 +22,6 @@ public class DetailActivity extends AppCompatActivity {
     String id;
     ImageView image,arrowBack,profileImage;
     TextView title,des;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +44,15 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
 
+
         APIArticleService apiArticleService = RetrofitInstance.createService(APIArticleService.class);
         Call<ArticleResponseByID> call = apiArticleService.getArticlesByID(id);
         call.enqueue(new Callback<ArticleResponseByID>() {
             @Override
             public void onResponse(Call<ArticleResponseByID> call, Response<ArticleResponseByID> response) {
+
                 Log.d("TAG",response.body().article.toString());
                 setDataToView(response.body().article);
-
             }
 
             @Override

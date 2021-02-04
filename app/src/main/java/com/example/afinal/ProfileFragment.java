@@ -112,6 +112,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+
         apiArticleService = RetrofitInstance.createService(APIArticleService.class);
         Call<ArticleResponse> call = apiArticleService.getArticles();
         call.enqueue(new Callback<ArticleResponse>() {

@@ -9,13 +9,17 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,6 +31,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -95,19 +100,26 @@ public class NewFeedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        setHasOptionsMenu(true);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_feed, container, false);
-        ImageView imgMenu = view.findViewById(R.id.menuItem);
+        EditText search = view.findViewById(R.id.search);
+
+
+
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -123,6 +135,29 @@ public class NewFeedFragment extends Fragment {
         pDialog.setTitleText("Loading ...");
         pDialog.setCancelable(true);
         pDialog.show();
+
+
+//        search with edittext
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    filter(s.toString());
+            }
+        });
+
+
+ImageView imgMenu = view.findViewById(R.id.menuItem);
+
 
 //        articles = new ArrayList<>();
         apiArticleService = RetrofitInstance.createService(APIArticleService.class);
@@ -149,9 +184,10 @@ public class NewFeedFragment extends Fragment {
                         currentArticle = article;
 //                        currentCategory = category;
                         //creating a popup menu
-                        PopupMenu popup = new PopupMenu(getActivity(), getActivity().findViewById(R.id.menuItem));
+                        final PopupMenu popup = new PopupMenu(getActivity(), getActivity().findViewById(R.id.menuItem));
                         //inflating menu from xml resource
-                        popup.getMenuInflater().inflate(R.menu.menu, popup.getMenu());
+                        MenuInflater menuInflater = popup.getMenuInflater();
+                        menuInflater.inflate(R.menu.menu, popup.getMenu());
 
                         //adding click listener
                         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -194,6 +230,20 @@ public class NewFeedFragment extends Fragment {
         return view;
     }
 
+    private void filter(String text) {
+        try {
+            ArrayList<Article> filterList = new ArrayList<>();
+            for (Article item : rowArrayList){
+                if (item.getTitle().toLowerCase().contains(text.toLowerCase())){
+                    filterList.add(item);
+                }
+            }
+            adapter.filterList(filterList);
+        }catch (Exception e){
+
+        }
+
+    }
 
 
     private void handleUpdateArticle() {
@@ -267,6 +317,7 @@ public class NewFeedFragment extends Fragment {
             dialog.show();
 
     }
+
 
 
     private void handleDeleteArticleClick() {

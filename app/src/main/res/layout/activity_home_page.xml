@@ -6,62 +6,65 @@
     android:layout_height="match_parent"
     android:paddingBottom="0dp"
     android:layout_marginBottom="0dp"
+    android:background="@color/white"
     tools:context=".HomePageActivity">
 
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab"
-        style="@style/CardView.Light"
-        android:layout_width="150dp"
-        android:layout_height="49dp"
-        android:layout_marginRight="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/search"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="48dp"
-        app:layout_constraintBottom_toBottomOf="@id/tab"
-        app:layout_editor_absoluteX="0dp"/>
-
-
-    <SearchView
-        android:id="@+id/search"
-        android:layout_width="172dp"
-        android:layout_height="47dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/logOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOGOUT"
+        android:textColor="@color/red_btn_bg_color"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.68"
+        app:layout_constraintHorizontal_bias="0.896"
         app:layout_constraintStart_toEndOf="@+id/tab"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab"
+        app:tabTextColor="#C8000000"
+        style="@style/CardView.Light"
+        android:layout_width="210dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.001" />
+
+
+    <!--    <SearchView-->
+<!--        android:id="@+id/search"-->
+<!--        android:layout_width="172dp"-->
+<!--        android:layout_height="47dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view"
+        android:layout_width="408dp"
+        android:layout_height="682dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab"
+        app:layout_editor_absoluteX="0dp" />
 
     <ImageView
         android:id="@+id/img_add"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/ic_baseline_add_circle_24"
-        android:layout_marginLeft="300dp"
-        android:layout_marginTop="1165dp"
+        android:layout_marginLeft="270dp"
+        android:layout_marginTop="455dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

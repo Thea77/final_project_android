@@ -5,12 +5,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,8 +26,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
 
     Context context;
     List<Article> articleList;
+    List<Article> articleListFull;
     ClickItemListener clickItemListener;
-
 
     public ArticleAdapter(Context context, List<Article> articleList, ClickItemListener clickItemListener) {
         this.context = context;
@@ -54,8 +57,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
         Article article = articleList.get(position);
 
         try {
-
             if(article != null && article.getCategory().getCat_name().matches("View")){
+                holder.cardView.setVisibility(View.VISIBLE);
                 holder.tvItem.setText(article.getTitle());
                 holder.txtDescription.setText(article.getDescription());
                 Glide.with(context)
@@ -81,7 +84,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
                   }
               });
 
-            }  else {
+            }  else{
                 NewFeedFragment.pDialog.dismiss();
 //                Toast.makeText(context, "Item is null", Toast.LENGTH_LONG).show();
             }
@@ -98,7 +101,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
     @Override
     public int getItemCount() {
         return articleList.size();
+
     }
+
+    public void filterList(ArrayList<Article> filterList){
+        articleList = filterList;
+        notifyDataSetChanged();
+    }
+
+
+
+
 
     public interface ClickItemListener {
         void onItemClick(String id);
@@ -110,13 +123,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ItemView
      class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvItem,txtDescription;
         ImageView imageView,imgMenu;
-
+        CardView cardView;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageItem);
             imgMenu = itemView.findViewById(R.id.menuItem);
             tvItem = itemView.findViewById(R.id.tvItem);
             txtDescription = itemView.findViewById(R.id.textDescription);
+            cardView = itemView.findViewById(R.id.cardView);
 
         }
     }

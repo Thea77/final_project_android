@@ -3,6 +3,7 @@ package com.example.afinal;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
@@ -17,6 +18,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,6 +41,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     FirebaseAuth mAuth;
     String TAG = "Main";
-    List<myAuthor> authorList;
-
+    ArrayList<myAuthor> authorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
                 //get profile detail in facebook
                 Profile profile = Profile.getCurrentProfile();
-//                Log.e(TAG,"myProfile: "+profile.getLinkUri());
-//                Log.e(TAG,"myProfile: "+profile.getProfilePictureUri(200,200));
 
 
-                    myAuthor myAuthor = new myAuthor();
-                    myAuthor.setName(profile.getName());
+                myAuthor myAuthor = new myAuthor();
+                myAuthor.setName(profile.getName());
 
                     if (!myAuthor.getName().matches(profile.getName())){
 //                        Log.e("TAG","my Name: "+myAuthor);
@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
 
+
                 Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
                 intent.putExtra("profileName",profile.getName());
                 startActivity(intent);
@@ -126,14 +127,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
-                startActivity(intent);
-
-            }
-        });
+//        login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("TAG","Logged");
                     Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
                     startActivity(intent);
+
                 }
             }
         };
@@ -166,6 +168,10 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 Log.d(TAG,"complete: "+user.getDisplayName());
+
+                String userName = user.getDisplayName();
+                ProfileAdapter profileAdapter = new ProfileAdapter(MainActivity.this,userName);
+                Log.e("MyUr: ", profileAdapter.name);
             }
         });
     }
@@ -185,10 +191,6 @@ public class MainActivity extends AppCompatActivity {
         register = findViewById(R.id.txtregister);
         loginButton = findViewById(R.id.login_button);
     }
-
-
-
-
 
 
 
