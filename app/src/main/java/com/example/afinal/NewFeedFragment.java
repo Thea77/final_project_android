@@ -281,7 +281,7 @@ ImageView imgMenu = view.findViewById(R.id.menuItem);
                 }
             });
 
-            articleList = new ArrayList<>();
+//            articleList = new ArrayList<>();
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

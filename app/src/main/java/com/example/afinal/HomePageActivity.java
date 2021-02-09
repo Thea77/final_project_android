@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -51,8 +52,6 @@ public class HomePageActivity extends AppCompatActivity {
     List<Category> categoryList;
     List<myAuthor> authorList;
 
-    ProgressBar progressBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +63,29 @@ public class HomePageActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LoginManager.getInstance().logOut();
-                Intent homePage = new Intent(HomePageActivity.this, MainActivity.class);
-                startActivity(homePage);
-                finish();
+
+                new SweetAlertDialog(HomePageActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Are you sure?")
+                        .setConfirmText("Logout")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                LoginManager.getInstance().logOut();
+                                Intent homePage = new Intent(HomePageActivity.this, MainActivity.class);
+                                startActivity(homePage);
+                                finish();
+
+                            }
+                        })
+                        .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+
             }
         });
 

@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     FirebaseAuth mAuth;
     String TAG = "Main";
-    ArrayList<myAuthor> authorList;
+    ArrayList<Article> articles;
+    public String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login_button);
         mAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
+
+
 
         loginButton.setPermissions("email","public_profile");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -109,10 +112,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
                 Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
                 intent.putExtra("profileName",profile.getName());
                 startActivity(intent);
+
             }
+
 
             @Override
             public void onCancel() {
@@ -140,9 +146,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,Register.class);
                 startActivity(intent);
+
             }
         });
-
 
 //    check user login
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
@@ -161,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void handleFacebookAccessToken(AccessToken accessToken) {
+    public void handleFacebookAccessToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
         mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -169,11 +175,19 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
                 Log.d(TAG,"complete: "+user.getDisplayName());
 
-                String userName = user.getDisplayName();
-                ProfileAdapter profileAdapter = new ProfileAdapter(MainActivity.this,userName);
-                Log.e("MyUr: ", profileAdapter.name);
+//                String userName = user.getDisplayName();
+//                ProfileAdapter profileAdapter = new ProfileAdapter();
+//                profileAdapter.getUserName(userName);
+//                Log.e("TAG","my Name: "+userName);
+
+
+//                String userName = user.getDisplayName();
+//                ProfileAdapter profileAdapter = new ProfileAdapter(MainActivity.this,userName);
+//                Log.e("MyUr: ", profileAdapter.name);
             }
         });
+
+
     }
 
 

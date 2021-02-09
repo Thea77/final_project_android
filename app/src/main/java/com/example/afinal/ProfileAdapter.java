@@ -1,17 +1,12 @@
 package com.example.afinal;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -19,8 +14,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileItemViewHolder>{
@@ -30,18 +28,32 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
     ClickProItemListener clickProItemListener;
 
     MainActivity activity;
-    String name;
+    String userName;
 
-    public ProfileAdapter(MainActivity activity,String userName) {
-        this.activity = activity;
-        this.name = userName;
+    public ProfileAdapter() {
     }
+
+//        public ProfileAdapter(MainActivity activity,List<Article> articleList,String userName) {
+//        this.activity = activity;
+//        this.articles = articleList;
+//        this.userName = userName;
+//    }
+
+
+//    public void getUserName(String userName){
+//         this.userName = userName;
+////        Log.e("TAG","myUser:"+ userName);
+//    }
+//    public String myUser(){
+//        return userName;
+//    }
 
     public ProfileAdapter(Context context, List<Article> articles, ClickProItemListener clickProItemListener) {
         this.context = context;
         this.articles = articles;
         this.clickProItemListener = clickProItemListener;
     }
+
 
     @NonNull
     @Override
@@ -53,14 +65,21 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
     @Override
     public void onBindViewHolder(@NonNull profileItemViewHolder holder, int position) {
             Article article = articles.get(position);
+//        getUserName(userName);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null){
+            String name = user.getDisplayName();
+            Log.e("USER:", ":"+ name);
+
         try {
-            Log.e("TAG","myUser:" + name);
 
 
             if( article != null && article.getCategory().getCat_name().matches("View")
-                    && article.getMyAuthor().getName().matches("Lim Sokunthea")
+                && article.getMyAuthor().getName().matches(name)
             ){
-                holder.cardView.setVisibility(View.VISIBLE);
+
+//                holder.cardView.setVisibility(View.VISIBLE);
 
 
                 String author = article.getMyAuthor().getName();
@@ -96,8 +115,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
 //            Toast.makeText(context, e.getMessage(),Toast.LENGTH_LONG).show();
         }
 
-    }
+        }
 
+    }
 
 
     public interface  ClickProItemListener{

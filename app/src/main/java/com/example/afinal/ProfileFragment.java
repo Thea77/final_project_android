@@ -42,7 +42,6 @@ public class ProfileFragment extends Fragment {
     RetrofitInstance retrofitInstance;
     ProfileAdapter adapter;
     Author author = new Author();
-    public static SweetAlertDialog pDialog;
 
     List<Article> rowArrayList;
     ImageView myImProfile;
