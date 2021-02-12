@@ -39,6 +39,9 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -59,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     FirebaseAuth mAuth;
     String TAG = "Main";
-    ArrayList<Article> articles;
-    public String userName;
+    List<myAuthor> myAuthorList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
 
+
+        myAuthorList = new ArrayList<>();
+//        for (myAuthor myAuth : myAuthorList){
+//            Log.e("TAG","my--Name: "+myAuth.getName());
+//        }
 
 
         loginButton.setPermissions("email","public_profile");
@@ -85,21 +92,58 @@ public class MainActivity extends AppCompatActivity {
                 //get profile detail in facebook
                 Profile profile = Profile.getCurrentProfile();
 
+//              Log.e("TAG","my--Name: "+myAuthor);
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    Log.e("TAG","User: "+jsonObject.getString("name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                myAuthor myAuthor = new myAuthor();
-                myAuthor.setName(profile.getName());
-
-                    if (!myAuthor.getName().matches(profile.getName())){
-//                        Log.e("TAG","my Name: "+myAuthor);
-                        Call<AuthorResponse> call = apiArticleService.createAuthor(new AuthorRequest(
-                                profile.getName(),profile.getProfilePictureUri(200,200).toString()
-
-                        ));
+//                        Call<AuthorResponse> call = apiArticleService.createAuthor(new AuthorRequest(
+//
+//                                profile.getName(),profile.getProfilePictureUri(200,200).toString()
+//
+//                        ));
+                Call<AuthorResponse> call = apiArticleService.getAllAuthor();
                         call.enqueue(new Callback<AuthorResponse>() {
                             @Override
                             public void onResponse(Call<AuthorResponse> call, Response<AuthorResponse> response) {
                                 if (response.isSuccessful()){
-                                    Log.e("TAG","created User: "+profile.getName());
+                                    myAuthorList = response.body().authorList;
+                                    String[] AuthName = new String[myAuthorList.size()];
+
+//                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                    for (int j=0; j<=myAuthorList.size();j++){
+                                        AuthName[j] = myAuthorList.get(j).getName();
+//                                        Log.e("TAG", "AuthorName: " + AuthName[j]);
+                                        if (profile.getName().matches(AuthName[j])){
+                                            Log.e("TAG", "User Exist: "+ AuthName[j]);
+                                            break;
+
+                                        }else if(!profile.getName().matches(AuthName[j])){
+                                            Log.e("TAG", "Create User: "+ AuthName[j]);
+                                            Call<AuthorResponse> call2 = apiArticleService.createAuthor(new AuthorRequest(
+                                                    profile.getName(),profile.getProfilePictureUri(200,200).toString()
+
+                                            ));
+                                            call2.enqueue(new Callback<AuthorResponse>() {
+                                                @Override
+                                                public void onResponse(Call<AuthorResponse> call, Response<AuthorResponse> response) {
+//                                                    Log.e("TAG","created User: "+profile.getName());
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<AuthorResponse> call, Throwable t) {
+
+                                                }
+                                            });
+                                            break;
+                                        }
+                                    }
+
+//                                    Log.e("TAG","created User: "+profile.getName());
 
                                 }
                             }
@@ -108,14 +152,11 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                    }
-
-
-
 
                 Intent intent = new Intent(MainActivity.this,HomePageActivity.class);
                 intent.putExtra("profileName",profile.getName());
                 startActivity(intent);
+
 
             }
 

@@ -27,27 +27,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.profileI
     List<Article> articles;
     ClickProItemListener clickProItemListener;
 
-    MainActivity activity;
-    String userName;
-
-    public ProfileAdapter() {
-    }
-
-//        public ProfileAdapter(MainActivity activity,List<Article> articleList,String userName) {
-//        this.activity = activity;
-//        this.articles = articleList;
-//        this.userName = userName;
-//    }
-
-
-//    public void getUserName(String userName){
-//         this.userName = userName;
-////        Log.e("TAG","myUser:"+ userName);
-//    }
-//    public String myUser(){
-//        return userName;
-//    }
-
     public ProfileAdapter(Context context, List<Article> articles, ClickProItemListener clickProItemListener) {
         this.context = context;
         this.articles = articles;

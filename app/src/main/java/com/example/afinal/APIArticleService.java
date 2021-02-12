@@ -25,6 +25,8 @@ public interface APIArticleService {
     @GET("/api/articles/{id}")
     Call<ArticleResponseByID> getArticlesByID(@Path("id") String id);
 
+
+
     @POST("/api/articles")
     Call<ArticleResponse> addArticle(@Body ArticleRequest articleRequest );
     @POST("/api/author")

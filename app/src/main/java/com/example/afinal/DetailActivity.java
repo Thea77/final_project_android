@@ -64,14 +64,19 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setDataToView(Article article) {
-        title.setText(article.getTitle());
-        des.setText(article.getDescription());
-        Glide.with(DetailActivity.this)
-                .load(article.getImage())
-                .into(image);
-        Glide.with(DetailActivity.this)
-                .load(article.getMyAuthor().image)
-                .into(profileImage);
+        try {
+            title.setText(article.getTitle());
+            des.setText(article.getDescription());
+            Glide.with(DetailActivity.this)
+                    .load(article.getImage())
+                    .into(image);
+            Glide.with(DetailActivity.this)
+                    .load(article.getMyAuthor().image)
+                    .into(profileImage);
+        }catch (Exception e){
+
+        }
+
 //        Glide.with(DetailActivity.this)
 //                .load("")
 //                .into(profileImage);
